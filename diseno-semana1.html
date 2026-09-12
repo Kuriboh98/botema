@@ -1,0 +1,417 @@
+<title>BoTema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --bg: #EBECF0;
+    --surface: #FFFFFF;
+    --surface-2: #F4F5F8;
+    --ink: #191C24;
+    --ink-soft: #565E6E;
+    --line: #DCDFE7;
+    --accent: #C98A00;      /* ámbar (más profundo para fondo claro) */
+    --accent-soft: #FBEFCB;
+    --celeste: #1391B5;
+    --celeste-soft: #DBF0F6;
+    --good: #1C9C62;
+    --good-soft: #D9F1E4;
+    --muted: #8890A0;
+    --shadow: 0 1px 2px rgba(20,22,28,.06), 0 8px 28px rgba(20,22,28,.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161C;
+      --surface: #1C1F27;
+      --surface-2: #232733;
+      --ink: #ECE9E1;
+      --ink-soft: #9AA1B0;
+      --line: #2E3340;
+      --accent: #F5B915;
+      --accent-soft: #38300E;
+      --celeste: #5AC8E6;
+      --celeste-soft: #12303A;
+      --good: #3DD68C;
+      --good-soft: #13342A;
+      --muted: #767E8E;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161C;
+    --surface: #1C1F27;
+    --surface-2: #232733;
+    --ink: #ECE9E1;
+    --ink-soft: #9AA1B0;
+    --line: #2E3340;
+    --accent: #F5B915;
+    --accent-soft: #38300E;
+    --celeste: #5AC8E6;
+    --celeste-soft: #12303A;
+    --good: #3DD68C;
+    --good-soft: #13342A;
+    --muted: #767E8E;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: clamp(20px, 5vw, 64px) clamp(18px, 5vw, 40px) 80px; }
+
+  /* Typography */
+  h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; text-wrap: balance; margin: 0; letter-spacing: -0.02em; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 12px; font-weight: 500; color: var(--celeste);
+  }
+  p { margin: 0; }
+  .lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-soft); max-width: 62ch; }
+
+  /* Hero */
+  .hero { padding: 22px 0 40px; border-bottom: 1px solid var(--line); }
+  .hero h1 {
+    font-size: clamp(46px, 12vw, 104px); font-weight: 800; line-height: 0.92;
+    margin: 14px 0 6px;
+  }
+  .hero h1 .dot { color: var(--accent); }
+  .hero .tagline { font-size: clamp(15px, 2vw, 18px); color: var(--ink); font-weight: 600; margin-bottom: 16px; }
+  .namebadge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-soft);
+    border: 1px dashed var(--line); border-radius: 999px; padding: 5px 12px; margin-top: 22px;
+  }
+
+  /* Equalizer motif in hero */
+  .eq { display: flex; align-items: flex-end; gap: 7px; height: 92px; margin: 26px 0 4px; }
+  .eq span {
+    width: 20px; border-radius: 5px 5px 2px 2px;
+    background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, transparent));
+  }
+
+  /* Sections */
+  section { padding-top: 52px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+  .sec-head h2 { font-size: clamp(24px, 4vw, 32px); font-weight: 700; }
+  .sec-num { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  /* Rounds visual */
+  .rounds { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .round {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 14px 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;
+  }
+  .round .rn { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .round .bar-track { height: 76px; display: flex; align-items: flex-end; }
+  .round .bar { width: 100%; border-radius: 6px 6px 3px 3px; background: var(--celeste); opacity: .9; }
+  .round .secs { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 22px; }
+  .round .secs small { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+
+  /* Generic cards grid */
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px; box-shadow: var(--shadow);
+  }
+  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .card p { color: var(--ink-soft); font-size: 14.5px; }
+
+  /* Scoring */
+  .score-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .score-pill {
+    flex: 1 1 90px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 10px; text-align: center;
+  }
+  .score-pill .r { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .score-pill .pts { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 30px; color: var(--accent); line-height: 1.2; }
+  .score-pill .sec { font-size: 12px; color: var(--ink-soft); }
+
+  /* Feedback legend */
+  .feedback { display: flex; flex-direction: column; gap: 12px; }
+  .fb { display: flex; align-items: center; gap: 12px; }
+  .swatch { width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0; }
+  .fb .txt b { font-weight: 600; }
+  .fb .txt span { color: var(--ink-soft); font-size: 14px; }
+
+  /* Diagram */
+  .diagram-wrap { overflow-x: auto; }
+  svg.er { width: 100%; min-width: 620px; height: auto; display: block; }
+  svg.er .node { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+  svg.er .ename { fill: var(--ink); font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 17px; }
+  svg.er .esub { fill: var(--ink-soft); font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+  svg.er .edge { stroke: var(--ink-soft); stroke-width: 1.6; fill: none; }
+  svg.er .edge-ref { stroke: var(--celeste); stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+  svg.er .elabel { fill: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+  svg.er .elabel-ref { fill: var(--celeste); font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+
+  /* Data model */
+  .entity { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+  .entity .top { padding: 14px 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--surface-2); }
+  .entity .top h3 { font-size: 16px; font-family: "IBM Plex Mono", monospace; font-weight: 600; letter-spacing: -0.01em; }
+  .entity .tag { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  .fields { list-style: none; margin: 0; padding: 8px 0; }
+  .fields li { display: flex; gap: 12px; padding: 7px 18px; font-family: "IBM Plex Mono", monospace; font-size: 13px; align-items: baseline; }
+  .fields .fname { color: var(--ink); min-width: 120px; }
+  .fields .ftype { color: var(--ink-soft); font-size: 12px; }
+  .fields .ref { color: var(--celeste); }
+
+  /* Endpoints table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; background: var(--surface); }
+  th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+  th { font-family: "IBM Plex Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 500; background: var(--surface-2); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.path { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink); white-space: nowrap; }
+  .verb { font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; letter-spacing: .03em; }
+  .verb.get { color: var(--celeste); background: var(--celeste-soft); }
+  .verb.post { color: var(--good); background: var(--good-soft); }
+  .action { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 5px; text-transform: uppercase; letter-spacing: .06em; }
+
+  /* Stack */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 15px; }
+
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 720px) {
+    .cols-2, .cols-3 { grid-template-columns: 1fr; }
+    .rounds { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .round { padding: 10px 6px 12px; }
+    .round .secs { font-size: 16px; }
+    .round .rn { font-size: 10px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">Proyecto #1 · Semana 1 — Diseño</div>
+    <h1>BoTema<span class="dot">.</span></h1>
+    <p class="tagline">Adiviná canciones uruguayas antes de que suenen demasiado.</p>
+    <p class="lede">Un juego estilo <em>Heardle</em>: cada canción se revela de a poco, en 6 rondas que suenan cada vez más. Adiviná rápido para sumar más, y encadená aciertos hasta fallar. Solo música uruguaya.</p>
+    <div class="eq" aria-hidden="true">
+      <span style="height:28%"></span><span style="height:64%"></span><span style="height:40%"></span>
+      <span style="height:88%"></span><span style="height:52%"></span><span style="height:100%"></span>
+      <span style="height:34%"></span><span style="height:72%"></span><span style="height:46%"></span>
+    </div>
+    <div class="namebadge">🇺🇾 Solo música uruguaya · modo racha</div>
+  </header>
+
+  <!-- CÓMO SE JUEGA -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Cómo se juega</h2></div>
+    <p class="lede" style="margin-bottom:24px">Cada canción tiene 6 rondas. Empieza sonando una décima de segundo; con cada intento fallado, el fragmento crece. Adiviná lo antes posible.</p>
+    <div class="rounds">
+      <div class="round"><div class="rn">Ronda 1</div><div class="bar-track"><div class="bar" style="height:6%"></div></div><div class="secs">0.1<small>s</small></div></div>
+      <div class="round"><div class="rn">Ronda 2</div><div class="bar-track"><div class="bar" style="height:13%"></div></div><div class="secs">0.5<small>s</small></div></div>
+      <div class="round"><div class="rn">Ronda 3</div><div class="bar-track"><div class="bar" style="height:25%"></div></div><div class="secs">2<small>s</small></div></div>
+      <div class="round"><div class="rn">Ronda 4</div><div class="bar-track"><div class="bar" style="height:42%"></div></div><div class="secs">4<small>s</small></div></div>
+      <div class="round"><div class="rn">Ronda 5</div><div class="bar-track"><div class="bar" style="height:68%"></div></div><div class="secs">8<small>s</small></div></div>
+      <div class="round"><div class="rn">Ronda 6</div><div class="bar-track"><div class="bar" style="height:100%"></div></div><div class="secs">15<small>s</small></div></div>
+    </div>
+  </section>
+
+  <!-- REGLAS DE NEGOCIO -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Reglas de negocio</h2></div>
+
+    <div class="grid cols-2" style="margin-bottom:16px">
+      <div class="card">
+        <h3>Modo racha</h3>
+        <p>Cada canción adivinada te lleva a la siguiente, sin límite. La partida termina cuando fallás una canción (agotás sus 6 rondas). El puntaje es <b>acumulativo</b>: una canción difícil (con pistas) puede incluso restarte del total.</p>
+      </div>
+      <div class="card">
+        <h3>El servidor manda</h3>
+        <p>El backend controla cuántos segundos podés escuchar en cada ronda y valida los aciertos. El cliente no decide la duración ni si adivinaste: así no se puede hacer trampa.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3 style="margin-bottom:14px">Puntaje — adivinar antes vale más</h3>
+      <div class="score-row">
+        <div class="score-pill"><div class="r">Ronda 1</div><div class="pts">100</div><div class="sec">en 0.1s</div></div>
+        <div class="score-pill"><div class="r">Ronda 2</div><div class="pts">80</div><div class="sec">en 0.5s</div></div>
+        <div class="score-pill"><div class="r">Ronda 3</div><div class="pts">60</div><div class="sec">en 2s</div></div>
+        <div class="score-pill"><div class="r">Ronda 4</div><div class="pts">40</div><div class="sec">en 4s</div></div>
+        <div class="score-pill"><div class="r">Ronda 5</div><div class="pts">20</div><div class="sec">en 8s</div></div>
+        <div class="score-pill"><div class="r">Ronda 6</div><div class="pts">10</div><div class="sec">en 15s</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:14px">Feedback de cada intento</h3>
+      <div class="feedback">
+        <div class="fb"><span class="swatch" style="background:var(--good)"></span><span class="txt"><b>Correcto</b> — <span>adivinaste la canción exacta: sumás puntos y seguís la racha.</span></span></div>
+        <div class="fb"><span class="swatch" style="background:var(--accent)"></span><span class="txt"><b>Cerca</b> — <span>erraste la canción pero acertaste el artista: avanzás de ronda y se desbloquea la pista de artista <b>gratis</b>.</span></span></div>
+        <div class="fb"><span class="swatch" style="background:var(--muted)"></span><span class="txt"><b>Erró</b> — <span>ni la canción ni el artista. Se desbloquea un fragmento más largo.</span></span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin-bottom:6px">Pistas — ayuda que cuesta puntos</h3>
+      <p style="color:var(--ink-soft);font-size:14.5px;margin-bottom:16px">Además de escuchar más, podés pedir hasta las 4 pistas. Cada una resta puntos; el costo se auto-limita porque el puntaje puede irse a <b>negativo</b>.</p>
+      <div class="score-row">
+        <div class="score-pill"><div class="r">📅 Año</div><div class="pts" style="color:var(--celeste)">−10</div><div class="sec">poco revelador</div></div>
+        <div class="score-pill"><div class="r">🔤 1ª letra</div><div class="pts" style="color:var(--celeste)">−20</div><div class="sec">del título</div></div>
+        <div class="score-pill"><div class="r">🎤 Artista</div><div class="pts" style="color:var(--celeste)">−30</div><div class="sec">gratis si 🟡</div></div>
+        <div class="score-pill"><div class="r">🖼️ Tapa</div><div class="pts" style="color:var(--celeste)">−30</div><div class="sec">la portada</div></div>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:var(--celeste-soft);border-radius:12px;font-size:14px">
+        <b>🎤 El truco del artista:</b> si adivinás una canción equivocada del <b>mismo artista</b> (feedback 🟡), el artista se desbloquea <b>gratis</b>. El amarillo te regala el dato y premia intuir la banda.
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTIDADES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Entidades y relaciones</h2></div>
+    <p class="lede" style="margin-bottom:24px">Cuatro entidades. Las líneas punteadas <span style="color:var(--celeste)">celestes</span> son referencias (<code style="font-family:'IBM Plex Mono'">ObjectId</code> + <code style="font-family:'IBM Plex Mono'">ref</code>) que se resuelven con <code style="font-family:'IBM Plex Mono'">populate</code>.</p>
+    <div class="card diagram-wrap">
+      <svg class="er" viewBox="0 0 800 300" role="img" aria-label="Diagrama de entidades: User, Game, Guess y Song">
+        <!-- edges -->
+        <path class="edge" d="M195 70 H320" />
+        <text class="elabel" x="230" y="60">1 : N</text>
+        <path class="edge" d="M480 70 H610" />
+        <text class="elabel" x="522" y="60">1 : N</text>
+        <path class="edge-ref" d="M400 108 V210" />
+        <text class="elabel-ref" x="408" y="165">ref · currentSong</text>
+        <path class="edge-ref" d="M685 108 C685 190, 560 200, 480 232" />
+        <text class="elabel-ref" x="560" y="165">ref · guessedSong</text>
+
+        <!-- nodes -->
+        <g>
+          <rect class="node" x="45" y="42" width="150" height="66" rx="12"/>
+          <text class="ename" x="66" y="76">User</text>
+          <text class="esub" x="66" y="95">jugador + puntaje</text>
+        </g>
+        <g>
+          <rect class="node" x="320" y="42" width="160" height="66" rx="12"/>
+          <text class="ename" x="342" y="76">Game</text>
+          <text class="esub" x="342" y="95">la racha en curso</text>
+        </g>
+        <g>
+          <rect class="node" x="610" y="42" width="150" height="66" rx="12"/>
+          <text class="ename" x="631" y="76">Guess</text>
+          <text class="esub" x="631" y="95">cada intento</text>
+        </g>
+        <g>
+          <rect class="node" x="320" y="210" width="160" height="66" rx="12"/>
+          <text class="ename" x="342" y="244">Song</text>
+          <text class="esub" x="342" y="263">catálogo uruguayo</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- MODELO DE DATOS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Modelo de datos</h2></div>
+    <div class="grid cols-2">
+      <div class="entity">
+        <div class="top"><h3>User</h3><span class="tag">jugador</span></div>
+        <ul class="fields">
+          <li><span class="fname">username</span><span class="ftype">String · único</span></li>
+          <li><span class="fname">email</span><span class="ftype">String · único</span></li>
+          <li><span class="fname">passwordHash</span><span class="ftype">String · bcrypt</span></li>
+          <li><span class="fname">bestScore</span><span class="ftype">Number</span></li>
+          <li><span class="fname">gamesPlayed</span><span class="ftype">Number</span></li>
+        </ul>
+      </div>
+      <div class="entity">
+        <div class="top"><h3>Song</h3><span class="tag">catálogo</span></div>
+        <ul class="fields">
+          <li><span class="fname">title</span><span class="ftype">String</span></li>
+          <li><span class="fname">artist</span><span class="ftype">String</span></li>
+          <li><span class="fname">previewUrl</span><span class="ftype">String · iTunes</span></li>
+          <li><span class="fname">coverUrl</span><span class="ftype">String</span></li>
+          <li><span class="fname">year</span><span class="ftype">Number · pista 📅</span></li>
+          <li><span class="fname">genre</span><span class="ftype">String · iTunes</span></li>
+          <li><span class="fname">itunesId</span><span class="ftype">String · único</span></li>
+        </ul>
+      </div>
+      <div class="entity">
+        <div class="top"><h3>Game</h3><span class="tag">acción</span></div>
+        <ul class="fields">
+          <li><span class="fname">user</span><span class="ftype ref">→ ref User</span></li>
+          <li><span class="fname">currentSong</span><span class="ftype ref">→ ref Song · oculta</span></li>
+          <li><span class="fname">currentRound</span><span class="ftype">Number · 1–6</span></li>
+          <li><span class="fname">status</span><span class="ftype">playing | over</span></li>
+          <li><span class="fname">totalScore</span><span class="ftype">Number</span></li>
+          <li><span class="fname">songsCompleted</span><span class="ftype">Number</span></li>
+          <li><span class="fname">playedSongs</span><span class="ftype ref">→ [ref Song]</span></li>
+          <li><span class="fname">hintsUsed</span><span class="ftype">[String] · pistas</span></li>
+          <li><span class="fname">artistRevealed</span><span class="ftype">Boolean · 🟡 gratis</span></li>
+        </ul>
+      </div>
+      <div class="entity">
+        <div class="top"><h3>Guess</h3><span class="tag">intento</span></div>
+        <ul class="fields">
+          <li><span class="fname">game</span><span class="ftype ref">→ ref Game</span></li>
+          <li><span class="fname">guessedSong</span><span class="ftype ref">→ ref Song</span></li>
+          <li><span class="fname">round</span><span class="ftype">Number</span></li>
+          <li><span class="fname">correct</span><span class="ftype">Boolean</span></li>
+          <li><span class="fname">sameArtist</span><span class="ftype">Boolean · 🟡</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENDPOINTS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Endpoints de la API</h2></div>
+    <p class="lede" style="margin-bottom:22px">Diez endpoints. Los marcados <span class="action">acción</span> no son CRUD: representan jugadas propias del sistema (ya son 4).</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Método</th><th>Ruta</th><th>Qué hace</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/auth/register</td><td>Registro de jugador</td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/auth/login</td><td>Login — devuelve token JWT</td></tr>
+          <tr><td><span class="verb get">GET</span></td><td class="path">/songs/search?q=</td><td>Autocomplete del catálogo</td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/games</td><td>Iniciar racha · primera canción random <span class="action">acción</span></td></tr>
+          <tr><td><span class="verb get">GET</span></td><td class="path">/games/:id</td><td>Estado actual · ronda, duración, sin revelar</td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/games/:id/guess</td><td>Adivinar · valida, puntúa, sigue o termina <span class="action">acción</span></td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/games/:id/skip</td><td>Pasar de ronda sin adivinar <span class="action">acción</span></td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/games/:id/hint</td><td>Pedir una pista · descuenta puntos <span class="action">acción</span></td></tr>
+          <tr><td><span class="verb get">GET</span></td><td class="path">/leaderboard</td><td>Ranking general por bestScore</td></tr>
+          <tr><td><span class="verb post">POST</span></td><td class="path">/songs</td><td>Importar canción de iTunes al catálogo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Stack técnico</h2></div>
+    <div class="chips">
+      <span class="chip">Node.js</span>
+      <span class="chip">Express</span>
+      <span class="chip">MongoDB</span>
+      <span class="chip">Mongoose</span>
+      <span class="chip">JWT + bcrypt</span>
+      <span class="chip">iTunes Search API</span>
+      <span class="chip">Vitest + Supertest</span>
+      <span class="chip">Frontend asistido por IA</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>BoTema — Documento de diseño</span>
+    <span>Semana 1 · API REST + MongoDB</span>
+  </footer>
+
+</div>

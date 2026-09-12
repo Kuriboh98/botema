@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BoTema · Probador de audio</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #14161C; color: #ECE9E1; max-width: 620px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: 24px; }
+  p { color: #9AA1B0; line-height: 1.6; }
+  input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #2E3340; background: #1C1F27; color: #ECE9E1; font-size: 14px; margin: 8px 0 18px; box-sizing: border-box; }
+  .rounds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  button { padding: 14px 10px; border-radius: 10px; border: 1px solid #2E3340; background: #232733; color: #ECE9E1; font-size: 14px; font-weight: 600; cursor: pointer; }
+  button:hover { border-color: #F5B915; }
+  button .s { display: block; color: #9AA1B0; font-size: 12px; font-weight: 400; margin-top: 2px; }
+  .full { grid-column: 1 / -1; background: #38300E; border-color: #F5B915; }
+  #estado { margin-top: 18px; color: #F5B915; font-size: 14px; min-height: 20px; }
+</style>
+</head>
+<body>
+  <h1>🎵 Probador de audio · BoTema</h1>
+  <p>Pegá el <b>previewUrl</b> que devuelve <code>POST /games</code> y tocá una ronda para escuchar solo esos segundos — como en el juego.</p>
+  <input id="url" placeholder="https://audio-ssl.itunes.apple.com/...preview.m4a">
+  <div class="rounds">
+    <button data-s="0.1">Ronda 1<span class="s">0.1s</span></button>
+    <button data-s="0.5">Ronda 2<span class="s">0.5s</span></button>
+    <button data-s="2">Ronda 3<span class="s">2s</span></button>
+    <button data-s="4">Ronda 4<span class="s">4s</span></button>
+    <button data-s="8">Ronda 5<span class="s">8s</span></button>
+    <button data-s="15">Ronda 6<span class="s">15s</span></button>
+    <button class="full" data-s="30">▶ Escuchar todo (30s)</button>
+  </div>
+  <div id="estado"></div>
+  <audio id="audio"></audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const url = document.getElementById('url');
+    const estado = document.getElementById('estado');
+    let timer;
+    document.querySelectorAll('button[data-s]').forEach((b) => {
+      b.onclick = () => {
+        clearTimeout(timer);
+        const u = url.value.trim();
+        if (!u) { estado.textContent = 'Pegá primero el previewUrl.'; return; }
+        audio.src = u;
+        audio.currentTime = 0;
+        audio.play();
+        const secs = parseFloat(b.dataset.s);
+        estado.textContent = 'Reproduciendo ' + secs + 's...';
+        timer = setTimeout(() => { audio.pause(); estado.textContent = 'Listo (' + secs + 's).'; }, secs * 1000);
+      };
+    });
+  </script>
+</body>
+</html>

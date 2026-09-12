@@ -1,0 +1,358 @@
+<title>Código de BoTema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --bg: #EBECF0; --surface: #FFFFFF; --surface-2: #F4F5F8;
+    --ink: #191C24; --ink-soft: #565E6E; --line: #DCDFE7;
+    --accent: #C98A00; --accent-soft: #FBEFCB; --celeste: #1391B5; --celeste-soft: #DBF0F6;
+    --code-bg: #1B1E27; --code-ink: #E7E9EE; --code-comment: #7D8698;
+    --muted: #8890A0; --shadow: 0 1px 2px rgba(20,22,28,.06), 0 8px 28px rgba(20,22,28,.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161C; --surface: #1C1F27; --surface-2: #232733;
+      --ink: #ECE9E1; --ink-soft: #9AA1B0; --line: #2E3340;
+      --accent: #F5B915; --accent-soft: #38300E; --celeste: #5AC8E6; --celeste-soft: #12303A;
+      --code-bg: #10121A; --code-ink: #E7E9EE; --code-comment: #6B7383;
+      --muted: #767E8E; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161C; --surface: #1C1F27; --surface-2: #232733;
+    --ink: #ECE9E1; --ink-soft: #9AA1B0; --line: #2E3340;
+    --accent: #F5B915; --accent-soft: #38300E; --celeste: #5AC8E6; --celeste-soft: #12303A;
+    --code-bg: #10121A; --code-ink: #E7E9EE; --code-comment: #6B7383;
+    --muted: #767E8E; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans", system-ui, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 820px; margin: 0 auto; padding: clamp(20px,5vw,56px) clamp(18px,5vw,36px) 80px; }
+  h1 { font-family: "Bricolage Grotesque", sans-serif; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; font-weight: 500; color: var(--celeste); }
+  p { margin: 0; }
+  header.hero { padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  header.hero h1 { font-size: clamp(38px,8vw,64px); font-weight: 800; line-height: .95; margin: 12px 0 10px; }
+  header.hero h1 .dot { color: var(--accent); }
+  header.hero p { color: var(--ink-soft); font-size: 17px; max-width: 58ch; }
+
+  /* Mapa de arquitectura */
+  .map { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: clamp(18px,4vw,26px); box-shadow: var(--shadow); margin-top: 24px; }
+  .map h2 { font-family: "Bricolage Grotesque", sans-serif; font-size: 20px; font-weight: 700; margin: 0 0 4px; }
+  .map .sub { color: var(--ink-soft); font-size: 14px; margin-bottom: 18px; }
+  .flow-scroll { overflow-x: auto; }
+  .flow { display: flex; align-items: stretch; gap: 0; min-width: min-content; }
+  .flow .step { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; text-align: center; min-width: 96px; }
+  .flow .step .n { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 13px; color: var(--ink); }
+  .flow .step .s { font-size: 10.5px; color: var(--ink-soft); margin-top: 2px; }
+  .flow .arrow { display: flex; align-items: center; color: var(--accent); font-weight: 700; padding: 0 7px; font-size: 15px; }
+
+  .divider { display: flex; align-items: center; gap: 12px; margin: 40px 0 14px; }
+  .divider span { font-family: "IBM Plex Mono", monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); white-space: nowrap; }
+  .divider::before, .divider::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+
+  .mini-flow { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-soft); background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 9px 13px; overflow-x: auto; white-space: nowrap; margin-bottom: 4px; }
+  .mini-flow b { color: var(--accent); }
+
+  .file { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: clamp(18px,4vw,26px); box-shadow: var(--shadow); margin-top: 18px; }
+  .file .layer { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); background: var(--accent-soft); display: inline-block; padding: 3px 9px; border-radius: 6px; }
+  .file .step-n { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--muted); float: right; margin-top: 4px; }
+  .file h2 { font-family: "IBM Plex Mono", monospace; font-size: clamp(16px,3vw,20px); font-weight: 600; margin: 12px 0 4px; letter-spacing: -0.01em; color: var(--ink); }
+  .file .que { color: var(--ink-soft); font-size: 15px; margin: 8px 0 16px; }
+  .file .que b { color: var(--ink); font-weight: 600; }
+  pre { background: var(--code-bg); color: var(--code-ink); border-radius: 11px; padding: 15px 17px; overflow-x: auto; margin: 0; }
+  code { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.6; }
+  pre .c { color: var(--code-comment); }
+  .idea { margin-top: 15px; padding: 12px 15px; background: var(--celeste-soft); border-radius: 11px; font-size: 13.5px; }
+  .idea b { color: var(--celeste); }
+  footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">BoTema · Backend · Semana 2</div>
+    <h1>Código explicado<span class="dot">.</span></h1>
+    <p>Recorremos el código <b>siguiendo el camino de una request</b>: cómo entra, por qué capas pasa, y qué hace cada archivo.</p>
+  </header>
+
+  <!-- MAPA -->
+  <div class="map">
+    <h2>El mapa: la ruta de una request</h2>
+    <p class="sub">Cada pedido entra por una ruta y baja por las capas hasta la base. Cada capa, una responsabilidad.</p>
+    <div class="flow-scroll">
+      <div class="flow">
+        <div class="step"><div class="n">HTTP request</div><div class="s">qué pediste</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">Ruta</div><div class="s">qué URL</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">Controller</div><div class="s">traduce HTTP</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">Service</div><div class="s">la lógica</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">Model</div><div class="s">los datos</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">MongoDB</div><div class="s">la base</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span>1 · Cómo arranca todo</span></div>
+
+  <div class="file">
+    <span class="layer">Arranque</span>
+    <h2>server.js</h2>
+    <p class="que">Acá lo que hacemos es <b>poner en marcha la aplicación</b>: cargamos el <code>.env</code>, conectamos a Mongo y, recién ahí, levantamos el servidor.</p>
+    <pre><code>import 'dotenv/config';
+import app from './app.js';
+import { connectMongoDB } from './database/mongodb.js';
+
+const PORT = process.env.PORT || 3000;
+
+try {
+  await connectMongoDB();      <span class="c">// 1. primero la base</span>
+  app.listen(PORT);            <span class="c">// 2. recién ahí, el servidor</span>
+} catch (error) {
+  process.exit(1);             <span class="c">// si la base falla, no arranca</span>
+}</code></pre>
+    <div class="idea"><b>Idea clave:</b> conectamos <b>antes</b> de levantar el servidor. Sin base, la app no arranca.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Base de datos</span>
+    <h2>database/mongodb.js</h2>
+    <p class="que">Acá lo que hacemos es <b>conectarnos a MongoDB</b> con Mongoose, usando la URL del <code>.env</code>. Es la única parte que sabe cómo conectarse.</p>
+    <pre><code>import mongoose from 'mongoose';
+import dns from 'node:dns';
+
+dns.setServers(['8.8.8.8', '1.1.1.1']);   <span class="c">// DNS de Google (fix de conexión)</span>
+
+export async function connectMongoDB() {
+  await mongoose.connect(process.env.MONGO_URI);  <span class="c">// lee la URL del .env</span>
+}</code></pre>
+    <div class="idea"><b>Idea clave:</b> la URL vive en el <code>.env</code>, fuera del código, para no exponer la contraseña.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Configuración</span>
+    <h2>app.js</h2>
+    <p class="que">Acá lo que hacemos es <b>configurar Express</b>: los middlewares (leer JSON, CORS), <b>montamos las rutas</b>, y el manejo de errores. Es la "puerta de entrada" de toda request.</p>
+    <pre><code>const app = express();
+
+app.use(cors());               <span class="c">// permite el frontend (otro origen)</span>
+app.use(express.json());       <span class="c">// para leer el body JSON</span>
+
+app.use('/auth', authRouter);  <span class="c">// las requests entran por acá</span>
+app.use('/songs', songRouter);
+
+app.use((err, req, res, next) =&gt; {          <span class="c">// manejo de errores central</span>
+  res.status(err.status || 500).json({ error: err.message });
+});</code></pre>
+    <div class="idea"><b>Idea clave:</b> toda request pasa primero por acá (middlewares), y de acá se reparte a la ruta que corresponda.</div>
+  </div>
+
+  <div class="divider"><span>2 · Seguí una request al catálogo</span></div>
+  <div class="mini-flow">POST /songs&nbsp; → &nbsp;<b>song.routes</b> → <b>song.controller</b> → <b>song.service</b> → (iTunes) → <b>Song</b> → MongoDB</div>
+
+  <div class="file">
+    <span class="layer">Rutas</span><span class="step-n">paso 1 · entra</span>
+    <h2>routes/song.routes.js</h2>
+    <p class="que">La request <b>entra por acá</b>. Acá lo que hacemos es <b>mapear la URL</b> a la función del controller que la atiende.</p>
+    <pre><code>router.get('/search', songController.buscar);   <span class="c">// GET  /songs/search?q=</span>
+router.get('/', songController.listar);         <span class="c">// GET  /songs</span>
+router.post('/', songController.importar);      <span class="c">// POST /songs</span></code></pre>
+  </div>
+
+  <div class="file">
+    <span class="layer">Controller</span><span class="step-n">paso 2 · traduce HTTP</span>
+    <h2>controllers/song.controller.js</h2>
+    <p class="que">Acá lo que hacemos es <b>traducir HTTP</b>: leer el <code>req</code>, llamar al service, y responder con su código. Sin lógica de negocio.</p>
+    <pre><code>export async function importar(req, res, next) {
+  try {
+    const { artista } = req.body;                 <span class="c">// lee el body</span>
+    if (!artista) throw httpError(400, 'Falta el campo "artista"');
+    res.status(201).json(await songService.importarArtista(artista));  <span class="c">// delega y responde</span>
+  } catch (err) { next(err); }
+}
+
+export async function listar(req, res, next) {
+  try { res.json(await songService.listarCanciones()); }
+  catch (err) { next(err); }
+}</code></pre>
+  </div>
+
+  <div class="file">
+    <span class="layer">Service</span><span class="step-n">paso 3 · la lógica</span>
+    <h2>services/song.service.js</h2>
+    <p class="que">Acá vive la <b>lógica del catálogo</b>: importar sin duplicar, listar, buscar. <b>No sabe qué es una request HTTP</b> — solo trabaja con datos.</p>
+    <pre><code>export async function importarArtista(artista) {
+  const canciones = await buscarCancionesDeArtista(artista);   <span class="c">// pide a iTunes</span>
+  for (const c of canciones) {
+    await Song.updateOne(
+      { itunesId: c.itunesId },   <span class="c">// buscá una con este id</span>
+      { $setOnInsert: c },        <span class="c">// si NO existe, insertala</span>
+      { upsert: true }            <span class="c">// "upsert" = insertar-o-nada</span>
+    );
+  }
+}
+
+export async function buscarEnCatalogo(q) {
+  const regex = new RegExp(q, 'i');   <span class="c">// 'i' = ignora mayúsculas</span>
+  return Song.find({ $or: [{ title: regex }, { artist: regex }] }).limit(10);
+}</code></pre>
+    <div class="idea"><b>Idea clave:</b> el <code>upsert</code> por <code>itunesId</code> hace que reimportar <b>no duplique</b>.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Service</span><span class="step-n">paso 3b · habla con iTunes</span>
+    <h2>services/itunes.service.js</h2>
+    <p class="que">El service del catálogo llama a este. Acá lo que hacemos es <b>pedirle canciones a iTunes</b> y traducirlas a la forma de nuestro <code>Song</code>.</p>
+    <pre><code>const url = `https://itunes.apple.com/search?term=${artista}&amp;entity=song&amp;country=UY`;
+const res = await fetch(url);
+const data = await res.json();
+
+return data.results
+  .filter((r) =&gt; r.previewUrl)          <span class="c">// solo las que tienen audio</span>
+  .map((r) =&gt; ({                          <span class="c">// a NUESTROS nombres</span>
+    title: r.trackName,
+    artist: r.artistName,
+    previewUrl: r.previewUrl,
+    year: new Date(r.releaseDate).getFullYear(),
+    itunesId: String(r.trackId),
+  }));</code></pre>
+    <div class="idea"><b>Idea clave:</b> traducimos los nombres de iTunes a los nuestros. El resto del código no sabe que iTunes existió.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Modelo</span><span class="step-n">paso 4 · los datos</span>
+    <h2>models/song.model.js</h2>
+    <p class="que">Acá lo que hacemos es <b>definir la forma de una canción</b> y darnos la herramienta (<code>Song</code>) para guardarla y buscarla en Mongo. El <code>itunesId</code> es único.</p>
+    <pre><code>const songSchema = new mongoose.Schema({
+  title:      { type: String, required: true },
+  artist:     { type: String, required: true },
+  previewUrl: { type: String, required: true },   <span class="c">// audio de 30s</span>
+  year:       { type: Number },                   <span class="c">// para la pista de año</span>
+  itunesId:   { type: String, required: true, unique: true },
+}, { timestamps: true });
+
+export const Song = mongoose.model('Song', songSchema);</code></pre>
+    <div class="idea"><b>Idea clave:</b> el Schema es el <b>molde</b>; <code>mongoose.model()</code> lo vuelve la <b>herramienta</b> para trabajar los datos.</div>
+  </div>
+
+  <div class="divider"><span>3 · Seguí una request de login</span></div>
+  <div class="mini-flow">POST /auth/login&nbsp; → &nbsp;<b>auth.routes</b> → <b>auth.controller</b> → <b>auth.service</b> (bcrypt + JWT) → <b>User</b> → MongoDB</div>
+
+  <div class="file">
+    <span class="layer">Rutas</span><span class="step-n">paso 1 · entra</span>
+    <h2>routes/auth.routes.js</h2>
+    <p class="que">La request de auth <b>entra por acá</b>. En <code>/me</code> metemos el <code>authenticate</code> en el medio: es la ruta protegida.</p>
+    <pre><code>router.post('/register', authController.register);        <span class="c">// público</span>
+router.post('/login', authController.login);              <span class="c">// público</span>
+router.get('/me', authenticate, authController.me);       <span class="c">// PROTEGIDO</span></code></pre>
+    <div class="idea"><b>Idea clave:</b> el <code>authenticate</code> antes del controller = esa ruta exige token válido.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Middleware</span><span class="step-n">el guardia (solo en /me)</span>
+    <h2>middleware/authenticate.js</h2>
+    <p class="que">En las rutas protegidas, la request pasa <b>primero por acá</b>. Acá lo que hacemos es <b>verificar el token</b> y guardar quién es en <code>req.user</code>.</p>
+    <pre><code>export function authenticate(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];   <span class="c">// "Bearer xxx"</span>
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);   <span class="c">// valida la firma</span>
+    next();                                                 <span class="c">// deja pasar al controller</span>
+  } catch {
+    next(httpError(401, 'Token inválido'));                 <span class="c">// si no, 401</span>
+  }
+}</code></pre>
+  </div>
+
+  <div class="file">
+    <span class="layer">Controller</span><span class="step-n">paso 2 · traduce HTTP</span>
+    <h2>controllers/auth.controller.js</h2>
+    <p class="que">Acá lo que hacemos es <b>traducir HTTP para la auth</b>: register, login, y <code>me</code> (el perfil del usuario del token).</p>
+    <pre><code>export async function register(req, res, next) {
+  try { res.status(201).json(await authService.register(req.body)); }
+  catch (err) { next(err); }
+}
+
+export async function login(req, res, next) {
+  try { res.json(await authService.login(req.body)); }   <span class="c">// { token, user }</span>
+  catch (err) { next(err); }
+}
+
+export async function me(req, res, next) {
+  try { res.json(await authService.getPerfil(req.user.id)); }  <span class="c">// req.user viene del middleware</span>
+  catch (err) { next(err); }
+}</code></pre>
+  </div>
+
+  <div class="file">
+    <span class="layer">Service</span><span class="step-n">paso 3 · la lógica</span>
+    <h2>services/auth.service.js</h2>
+    <p class="que">Acá vive la <b>lógica de auth</b>. Al registrar, hasheamos la contraseña con bcrypt. Al loguear, la comparamos y firmamos un token JWT.</p>
+    <pre><code>export async function register({ username, email, password }) {
+  const passwordHash = await bcrypt.hash(password, 10);   <span class="c">// la ciframos</span>
+  return User.create({ username, email, passwordHash });
+}
+
+export async function login({ email, password }) {
+  const user = await User.findOne({ email });
+  const ok = await bcrypt.compare(password, user.passwordHash);   <span class="c">// comparamos</span>
+  if (!ok) throw httpError(401, 'Credenciales inválidas');
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);  <span class="c">// firmamos</span>
+  return { token };
+}</code></pre>
+    <div class="idea"><b>Idea clave:</b> la contraseña se guarda <b>hasheada</b> (irreversible); el login devuelve un <b>token</b>, no la sesión.</div>
+  </div>
+
+  <div class="file">
+    <span class="layer">Modelo</span><span class="step-n">paso 4 · los datos</span>
+    <h2>models/user.model.js</h2>
+    <p class="que">Acá lo que hacemos es <b>definir la forma de un jugador</b>. Guardamos el <code>passwordHash</code> (nunca la contraseña real) y su <code>bestScore</code> para el ranking.</p>
+    <pre><code>const userSchema = new mongoose.Schema({
+  username:     { type: String, required: true, unique: true },
+  email:        { type: String, required: true, unique: true },
+  passwordHash: { type: String, required: true },  <span class="c">// hasheada</span>
+  bestScore:    { type: Number, default: 0 },
+  gamesPlayed:  { type: Number, default: 0 },
+}, { timestamps: true });
+
+export const User = mongoose.model('User', userSchema);</code></pre>
+  </div>
+
+  <div class="divider"><span>4 · Ayudantes (los usan varias capas)</span></div>
+
+  <div class="file">
+    <span class="layer">Utils</span>
+    <h2>utils/httpError.js</h2>
+    <p class="que">Acá lo que hacemos es un <b>ayudante para crear errores con su código HTTP</b>. Así los services lanzan un 401 o 404, y el manejador de errores del <code>app.js</code> lo traduce.</p>
+    <pre><code>export function httpError(status, message) {
+  const err = new Error(message);
+  err.status = status;    <span class="c">// le "pega" el status al error</span>
+  return err;
+}</code></pre>
+  </div>
+
+  <div class="file">
+    <span class="layer">Script</span>
+    <h2>database/seedCatalog.js</h2>
+    <p class="que">Acá lo que hacemos es <b>poblar el catálogo de una</b>: recorremos una lista de artistas uruguayos y los importamos. Se corre con <code>npm run seed</code>.</p>
+    <pre><code>const ARTISTAS = ['No Te Va Gustar', 'La Vela Puerca', 'El Cuarteto de Nos', /* ... */];
+
+await connectMongoDB();
+for (const artista of ARTISTAS) {
+  await importarArtista(artista);   <span class="c">// reusa la lógica del service</span>
+}</code></pre>
+    <div class="idea"><b>Idea clave:</b> el seed <b>reusa</b> la función <code>importarArtista</code> del service — no repetimos lógica.</div>
+  </div>
+
+  <footer>BoTema · Recorrido del código (por la ruta de una request) · Backend Semana 2</footer>
+
+</div>

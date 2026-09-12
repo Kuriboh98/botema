@@ -1,0 +1,231 @@
+:root {
+  --bg: #14161c;
+  --surface: #1c1f27;
+  --surface-2: #232733;
+  --ink: #ece9e1;
+  --ink-soft: #9aa1b0;
+  --line: #2e3340;
+  --accent: #f5b915;
+  --accent-ink: #14161c;
+  --celeste: #5ac8e6;
+  --good: #3dd68c;
+  --danger: #e5484d;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; letter-spacing: -0.02em; margin: 0; }
+.dot { color: var(--accent); }
+
+/* --- Login / Registro --- */
+.auth-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 34px 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+.brand { font-size: 44px; font-weight: 800; line-height: 1; }
+.tagline { color: var(--ink-soft); margin: 8px 0 24px; }
+
+.tabs { display: flex; gap: 6px; background: var(--surface-2); padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+.tabs button {
+  flex: 1; padding: 9px; border: none; background: transparent; color: var(--ink-soft);
+  border-radius: 9px; font-weight: 600; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.tabs button.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+
+form { display: flex; flex-direction: column; gap: 12px; }
+input {
+  padding: 12px 14px; border-radius: 11px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); font-size: 15px; font-family: inherit;
+}
+input:focus { outline: none; border-color: var(--accent); }
+
+.btn-primary {
+  margin-top: 6px; padding: 13px; border: none; border-radius: 11px;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 15px;
+  cursor: pointer; font-family: inherit;
+}
+.btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+.error { color: var(--danger); font-size: 14px; background: rgba(229, 72, 77, 0.12); padding: 10px 12px; border-radius: 9px; }
+
+/* --- App logueada --- */
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 22px; border-bottom: 1px solid var(--line);
+}
+.brand-sm { flex: 1; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 22px; }
+.user-box { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+.hola { color: var(--ink-soft); font-size: 14px; }
+.btn-ghost {
+  padding: 8px 14px; border: 1px solid var(--line); background: transparent; color: var(--ink);
+  border-radius: 9px; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.btn-ghost:hover { border-color: var(--accent); }
+
+.centro { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.placeholder { text-align: center; }
+.placeholder .big { font-size: 56px; margin: 0; }
+.placeholder h2 { font-size: 26px; margin: 8px 0; }
+.placeholder .sub { color: var(--ink-soft); }
+
+/* --- El juego --- */
+.centro { align-items: flex-start; padding-top: 40px; }
+.game, .gameover { width: 100%; max-width: 440px; }
+.loading { color: var(--ink-soft); }
+
+.scorebar {
+  display: flex; justify-content: space-between; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 18px; margin-bottom: 20px; font-weight: 600;
+}
+.scorebar .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 500; }
+
+.player { margin-bottom: 18px; }
+.bar-area { position: relative; padding-top: 30px; } /* espacio para el indicador de arriba */
+.unlock-marker {
+  position: absolute; top: 0; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; transition: left .15s ease;
+}
+.unlock-label { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+.unlock-arrow { color: var(--accent); font-size: 10px; line-height: 1; margin-top: 2px; }
+.progress {
+  position: relative; height: 16px; background: var(--surface-2);
+  border-radius: 6px; overflow: hidden;
+}
+.progress .unlocked { position: absolute; inset: 0 auto 0 0; background: rgba(245, 185, 21, .22); }
+.progress .played { position: absolute; inset: 0 auto 0 0; background: var(--accent); transition: width .05s linear; }
+.progress .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--bg); transform: translateX(-1px); }
+.player-row { display: flex; justify-content: center; margin-top: 16px; }
+.play-toggle {
+  width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); font-size: 20px; font-weight: 700; font-family: inherit;
+}
+
+.falladas { margin: 4px 0 16px; }
+.falladas-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 500; }
+.falladas ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.falladas li { font-size: 14px; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.falladas-artist { color: var(--ink-soft); opacity: .7; }
+
+.feedback { padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-size: 14px; }
+.feedback.ok { background: rgba(61, 214, 140, .14); color: var(--good); }
+.feedback.cerca { background: rgba(245, 185, 21, .14); color: var(--accent); }
+.feedback.erro { background: var(--surface-2); color: var(--ink-soft); }
+.feedback .pts { float: right; font-weight: 700; }
+
+.search { position: relative; margin-bottom: 12px; }
+.search input { width: 100%; }
+.suggestions {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 10; margin: 6px 0 0; padding: 6px; list-style: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.4);
+  max-height: 260px; overflow-y: auto;
+}
+.suggestions li { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; }
+.suggestions li:hover { background: var(--surface-2); }
+.s-title { font-weight: 600; }
+.s-artist { font-size: 12px; color: var(--ink-soft); }
+
+.skip { width: 100%; margin-bottom: 22px; }
+
+.hints { border-top: 1px solid var(--line); padding-top: 18px; }
+.hint-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.hint-btn {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 11px; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.hint-btn:hover:not(:disabled) { border-color: var(--celeste); }
+.hint-btn:disabled { opacity: .5; cursor: default; }
+.hint-btn .costo { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--celeste); }
+
+.revealed { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; align-items: center; }
+.chip { background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 13px; }
+.cover-wrap { display: flex; justify-content: center; margin-top: 16px; }
+.cover-big {
+  width: 100%; max-width: 260px; aspect-ratio: 1 / 1; object-fit: cover;
+  border-radius: 16px; box-shadow: 0 12px 34px rgba(0, 0, 0, .45);
+}
+
+/* --- Fin de partida --- */
+.gameover { text-align: center; margin: 0 auto; }
+.go-emoji { font-size: 54px; margin: 0; }
+.gameover h2 { font-size: 26px; }
+.final-score { font-family: "Bricolage Grotesque", sans-serif; font-size: 56px; font-weight: 800; color: var(--accent); margin: 6px 0; }
+.final-score span { font-size: 18px; color: var(--ink-soft); font-weight: 500; }
+.go-sub { color: var(--ink-soft); }
+.go-revealed { margin: 14px 0 22px; }
+.gameover .btn-primary { padding: 13px 28px; }
+
+/* --- Navegación --- */
+.nav { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 10px; }
+.nav-btn {
+  padding: 7px 16px; border: none; background: transparent; color: var(--ink-soft);
+  border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.nav-btn.active { background: var(--surface); color: var(--ink); }
+
+/* --- Leaderboard --- */
+.leaderboard { width: 100%; max-width: 440px; }
+.leaderboard h2 { font-size: 26px; margin-bottom: 18px; }
+.lb-empty { color: var(--ink-soft); }
+.lb-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.lb-list li {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+}
+.lb-list li.lb-first { border-color: var(--accent); }
+.lb-pos { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--ink-soft); width: 20px; }
+.lb-first .lb-pos { color: var(--accent); }
+.lb-name { flex: 1; font-weight: 600; }
+.lb-date { font-size: 12px; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; }
+.lb-score { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 20px; color: var(--accent); }
+
+/* --- Modal + canción revelada --- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100; padding: 20px;
+  background: rgba(0, 0, 0, .72); display: flex; align-items: center; justify-content: center;
+}
+.modal {
+  width: 100%; max-width: 380px; text-align: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .55); max-height: 92vh; overflow-y: auto;
+}
+.win-emoji { font-size: 38px; margin: 0; }
+.modal h2 { font-size: 26px; margin: 4px 0; }
+.win-pts { color: var(--good); font-weight: 700; font-family: "Bricolage Grotesque", sans-serif; font-size: 22px; margin: 0; }
+.modal .btn-primary { margin-top: 16px; width: 100%; padding: 13px; }
+
+.reveal { display: flex; flex-direction: column; align-items: center; margin: 14px 0; }
+.reveal-cover { width: 190px; height: 190px; border-radius: 14px; object-fit: cover; box-shadow: 0 12px 34px rgba(0,0,0,.45); margin-bottom: 14px; }
+.reveal-title { font-size: 22px; margin: 0; }
+.reveal-artist { color: var(--ink-soft); margin: 2px 0 0; }
+.reveal-year { color: var(--ink-soft); font-size: 13px; font-family: "IBM Plex Mono", monospace; margin: 4px 0 0; }
+.reveal .player { width: 100%; margin-top: 16px; margin-bottom: 0; }
+
+/* --- Game over enriquecido --- */
+.go-reveal-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin: 20px 0; }
+.go-reveal-label { color: var(--ink-soft); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+.btn-primary.big { padding: 14px 28px; font-size: 16px; }
+.go-leaderboard { margin-top: 34px; text-align: left; }
