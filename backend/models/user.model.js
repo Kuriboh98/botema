@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
         bestScore: { type: Number, default: 0 },
         bestScoreAt: { type: Date }, // cuándo hizo su mejor puntaje
         gamesPlayed: { type: Number, default: 0 },
+        songsCompleted: { type: Number, default: 0 }, // canciones acertadas en total (todas las partidas)
     },
     { timestamps: true }
 );

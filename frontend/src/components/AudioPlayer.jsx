@@ -1,5 +1,6 @@
 // src/components/AudioPlayer.jsx
 import { useRef, useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 
 // Barra de reproducción con play/pausa.
 // - limit: segundos desbloqueados (hasta dónde se puede escuchar)
@@ -65,7 +66,7 @@ export default function AudioPlayer({ src, limit, total, marks }) {
 
             <div className="player-row">
                 <button className="play-toggle" onClick={toggle} aria-label={playing ? 'Pausar' : 'Reproducir'}>
-                    {playing ? '❚❚' : '▶'}
+                    <Icon icon={playing ? 'game-icons:pause-button' : 'game-icons:play-button'} />
                 </button>
             </div>
 

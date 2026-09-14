@@ -1,5 +1,6 @@
 // src/components/Leaderboard.jsx
 import { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 import { api } from '../api';
 
 export default function Leaderboard() {
@@ -19,7 +20,7 @@ export default function Leaderboard() {
 
     return (
         <div className="leaderboard">
-            <h2>🏆 Ranking</h2>
+            <h2><Icon icon="game-icons:trophy" className="ic" /> Ranking</h2>
             {jugadores.length === 0 ? (
                 <p className="lb-empty">Todavía no hay puntajes. ¡Jugá una partida!</p>
             ) : (

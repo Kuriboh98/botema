@@ -32,6 +32,7 @@ export const api = {
 
     // Catálogo
     searchSongs: (q) => request(`/songs/search?q=${encodeURIComponent(q)}`),
+    songs: () => request('/songs'),
 
     // Juego (todas requieren token)
     startGame: () => request('/games', { method: 'POST', auth: true }),

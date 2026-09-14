@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { api } from '../api';
 import { saveSession } from '../auth';
+import Mascota from './Mascota';
 
 export default function Auth({ onLogin }) {
     const [modo, setModo] = useState('login'); // 'login' | 'register'
@@ -34,7 +35,12 @@ export default function Auth({ onLogin }) {
                 <h1 className="brand">
                     BoTema<span className="dot">.</span>
                 </h1>
-                <p className="tagline">Adiviná canciones uruguayas de oído.</p>
+                <h2 className="hero-title">La música uruguaya también se juega</h2>
+                <p className="tagline">Escuchá, adiviná y encadená aciertos para mantener tu racha.</p>
+
+                <div className="auth-illustration">
+                    <Mascota pose="login" alt="Mascota de BoTema" />
+                </div>
 
                 <div className="tabs">
                     <button className={modo === 'login' ? 'active' : ''} onClick={() => setModo('login')}>

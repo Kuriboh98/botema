@@ -72,8 +72,11 @@ export async function adivinar(userId, gameId, guessedSongId) {
         return { correct: true, pointsEarned, revealed: infoCancion(objetivo), ...estadoPublico(game, siguiente) };
     }
 
-    // --- erró: el amarillo desbloquea el artista gratis ---
-    if (sameArtist) game.artistRevealed = true;
+    // --- erró: el amarillo revela el artista automáticamente (gratis) ---
+    if (sameArtist) {
+        game.artistRevealed = true;
+        if (!game.hintsUsed.includes('artista')) game.hintsUsed.push('artista');
+    }
     game.currentRound += 1;
 
     // --- CAMINO 3: agotó las 6 rondas -> game over ---
@@ -167,6 +170,7 @@ async function terminarPartida(game) {
     await game.save();
     const user = await User.findById(game.user);
     user.gamesPlayed += 1;
+    user.songsCompleted += game.songsCompleted; // sumamos las de esta partida al total
     if (game.totalScore > user.bestScore) {
         user.bestScore = game.totalScore;
         user.bestScoreAt = new Date(); // registramos cuándo hizo el récord

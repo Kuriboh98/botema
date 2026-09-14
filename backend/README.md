@@ -97,16 +97,20 @@ La arquitectura sigue el patrón en **capas**: `ruta → controller → service 
 | POST | `/games/:id/guess` | 🔒 | Adivinar la canción |
 | POST | `/games/:id/skip` | 🔒 | Pasar de ronda |
 | POST | `/games/:id/hint` | 🔒 | Pedir una pista |
-| GET | `/leaderboard` | — | Ranking por mejor racha |
+| GET | `/leaderboard` | — | Ranking por mejor puntaje (top 10) |
 
 🔒 = requiere el token en la cabecera `Authorization: Bearer <token>`.
+
+- `GET /auth/me` devuelve `username`, `email`, `bestScore`, `bestScoreAt`, `gamesPlayed` y `songsCompleted`.
+- `GET /leaderboard` devuelve el top 10 por `bestScore`, con la **fecha** del récord (`bestScoreAt`).
+- El backend tiene **CORS** habilitado para que el frontend (otro origen) pueda consumirlo.
 
 Para el detalle de cada endpoint (bodies y respuestas de ejemplo), ver [API.md](API.md).
 
 ## Cómo funciona el juego
 
-1. Cada canción tiene **6 rondas** que suenan cada vez más (0.1s → 15s).
+1. Cada canción tiene **6 rondas** que suenan cada vez más (**1s, 2s, 4s, 8s, 16s, 30s**).
 2. Adivinar antes vale más (**100 → 10** puntos).
 3. Es **modo racha**: adivinás una y pasás a otra, hasta fallar.
 4. **Pistas** que restan puntos (año −10, 1ª letra −20, artista −30, tapa −30). El puntaje puede ir a negativo.
-5. Si errás pero acertás el **artista** (🟡), la pista de artista se desbloquea **gratis**.
+5. Si errás pero acertás el **artista**, la pista de artista se **revela automáticamente y gratis**.

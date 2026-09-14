@@ -1,19 +1,23 @@
 // src/components/Game.jsx
 import { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 import { api } from '../api';
 import AudioPlayer from './AudioPlayer';
+import NowPlaying from './NowPlaying';
 import SearchBox from './SearchBox';
 import Hints from './Hints';
 import Modal from './Modal';
 import SongReveal from './SongReveal';
 import Leaderboard from './Leaderboard';
+import Mascota from './Mascota';
 
-export default function Game() {
+export default function Game({ onHome }) {
     const [game, setGame] = useState(null); // estado de la partida
     const [feedback, setFeedback] = useState(null); // resultado del último intento (erró/cerca/over)
     const [winModal, setWinModal] = useState(null); // pop-up de "¡Correcto!" { song, points }
     const [revealedHints, setRevealedHints] = useState({}); // pistas ya reveladas
     const [falladas, setFalladas] = useState([]); // canciones que erraste para la canción actual
+    const [showHints, setShowHints] = useState(false); // modal de pistas
     const [busy, setBusy] = useState(false);
 
     async function iniciar() {
@@ -22,6 +26,7 @@ export default function Game() {
         setWinModal(null);
         setRevealedHints({});
         setFalladas([]);
+        setShowHints(false);
         try {
             setGame(await api.startGame());
         } catch (e) {
@@ -38,6 +43,7 @@ export default function Game() {
     async function adivinar(song) {
         if (busy) return;
         setBusy(true);
+        setShowHints(false);
         const audioActual = game.previewUrl; // el audio de la canción actual (para revelarla)
         try {
             const res = await api.guess(game.id, song._id);
@@ -55,8 +61,12 @@ export default function Game() {
             } else {
                 setFeedback({ correct: false, sameArtist: res.sameArtist });
                 setGame(res);
-                // recordamos la que erraste para no repetirla
-                setFalladas((f) => (f.some((x) => x._id === song._id) ? f : [...f, song]));
+                // si acertaste el artista, se revela solo en la ficha (la canción errada es de ese artista)
+                if (res.sameArtist) setRevealedHints((h) => ({ ...h, artista: song.artist }));
+                // recordamos la que erraste para no repetirla (con si acertó el artista)
+                setFalladas((f) =>
+                    f.some((x) => x._id === song._id) ? f : [...f, { ...song, sameArtist: res.sameArtist }]
+                );
             }
         } catch (e) {
             alert(e.message);
@@ -86,6 +96,7 @@ export default function Game() {
     async function saltar() {
         if (busy) return;
         setBusy(true);
+        setShowHints(false);
         setFeedback(null);
         const audioActual = game.previewUrl;
         try {
@@ -109,7 +120,7 @@ export default function Game() {
     if (game.status === 'over') {
         return (
             <div className="gameover">
-                <p className="go-emoji">🏁</p>
+                <Mascota pose="incorrecta" className="mascota-go" alt="" />
                 <h2>Fin de la partida</h2>
                 <p className="final-score">
                     {game.totalScore} <span>puntos</span>
@@ -123,7 +134,10 @@ export default function Game() {
                     </div>
                 )}
 
-                <button className="btn-primary big" onClick={iniciar}>Jugar de nuevo</button>
+                <div className="go-actions">
+                    <button className="btn-primary big" onClick={iniciar}>Jugar de nuevo</button>
+                    <button className="btn-ghost" onClick={onHome}><Icon icon="game-icons:house" className="ic" /> Volver al inicio</button>
+                </div>
 
                 <div className="go-leaderboard">
                     <Leaderboard />
@@ -141,49 +155,69 @@ export default function Game() {
                 <div><span className="lbl">Canciones</span> {game.songsCompleted}</div>
             </div>
 
-            <AudioPlayer
-                src={game.previewUrl}
-                limit={game.allowedDuration}
-                total={30}
-                marks={[1, 2, 4, 8, 16, 30]}
-            />
+            <NowPlaying revealed={revealedHints} onPistas={() => setShowHints(true)} />
 
+            <div className="player-zone">
+                <div className="mascota-col">
+                    <Mascota pose={!feedback ? 'lejos' : feedback.sameArtist ? 'cerca' : '404'} className="mascota-partida" alt="" />
+                    {feedback && feedback.correct === false && (
+                        <p className={`feedback-min ${feedback.sameArtist ? 'cerca' : 'erro'}`}>
+                            <Icon icon={feedback.sameArtist ? 'game-icons:bullseye' : 'game-icons:circle'} className="ic" />{' '}
+                            {feedback.sameArtist ? '¡Cerca! Acertaste el artista.' : 'No era, escuchá un poco más.'}
+                        </p>
+                    )}
+                </div>
+                <AudioPlayer
+                    src={game.previewUrl}
+                    limit={game.allowedDuration}
+                    total={30}
+                    marks={[1, 2, 4, 8, 16, 30]}
+                />
+            </div>
+
+            <SearchBox onSelect={adivinar} disabled={busy} />
+
+            <button className="btn-ghost skip" onClick={saltar} disabled={busy}>
+                {game.currentRound >= 6 ? (
+                    <><Icon icon="game-icons:flying-flag" className="ic" /> Rendirse</>
+                ) : (
+                    <>Escuchar más <Icon icon="game-icons:fast-forward-button" className="ic" /> (pasar ronda)</>
+                )}
+            </button>
+
+            {/* El historial va abajo para no empujar el buscador */}
             {falladas.length > 0 && (
                 <div className="falladas">
                     <span className="falladas-lbl">Ya intentaste:</span>
                     <ul>
                         {falladas.map((s) => (
-                            <li key={s._id}>
-                                ❌ {s.title} <span className="falladas-artist">— {s.artist}</span>
+                            <li key={s._id} className={s.sameArtist ? 'fallada-cerca' : ''}>
+                                <Icon icon={s.sameArtist ? 'game-icons:bullseye' : 'game-icons:cross-mark'} className="ic" /> {s.title} <span className="falladas-artist">— {s.artist}</span>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
 
-            {feedback && feedback.correct === false && (
-                <div className={`feedback ${feedback.sameArtist ? 'cerca' : 'erro'}`}>
-                    {feedback.sameArtist ? '🟡 ¡Cerca! Acertaste el artista.' : '⚪ No era. Escuchá un poco más.'}
-                </div>
+            {/* Pistas en un modal (se abre con la lupa de la ficha) */}
+            {showHints && (
+                <Modal onClose={() => setShowHints(false)}>
+                    <h2><Icon icon="game-icons:magnifying-glass" className="ic" /> Pistas</h2>
+                    <p className="hints-sub">Cada pista descuenta puntos y completa la ficha.</p>
+                    <Hints onHint={pista} revealed={revealedHints} artistRevealed={game.artistRevealed} />
+                    <button className="btn-ghost hints-close" onClick={() => setShowHints(false)}>Listo</button>
+                </Modal>
             )}
-
-            <SearchBox onSelect={adivinar} disabled={busy} />
-
-            <button className="btn-ghost skip" onClick={saltar} disabled={busy}>
-                {game.currentRound >= 6 ? '🏳️ Rendirse' : 'Escuchar más ⏭ (pasar ronda)'}
-            </button>
-
-            <Hints onHint={pista} revealed={revealedHints} artistRevealed={game.artistRevealed} />
 
             {/* Pop-up de acierto */}
             {winModal && (
                 <Modal onClose={() => setWinModal(null)}>
-                    <p className="win-emoji">🟢</p>
+                    <Mascota pose="correcta" className="mascota-win" alt="" />
                     <h2>¡Correcto!</h2>
                     <p className="win-pts">+{winModal.points} puntos</p>
                     <SongReveal song={winModal.song} />
                     <button className="btn-primary" onClick={() => setWinModal(null)}>
-                        Seguir jugando
+                        Siguiente canción →
                     </button>
                 </Modal>
             )}

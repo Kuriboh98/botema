@@ -1,5 +1,6 @@
 // src/components/SearchBox.jsx
 import { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 import { api } from '../api';
 
 // Buscador con autocomplete: busca en el catálogo y sugiere canciones.
@@ -32,12 +33,20 @@ export default function SearchBox({ onSelect, disabled }) {
 
     return (
         <div className="search">
-            <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="¿Qué canción es? Escribí para buscar..."
-                disabled={disabled}
-            />
+            <div className="search-field">
+                <Icon icon="game-icons:magnifying-glass" className="search-ico" />
+                <input
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    placeholder="¿Qué canción es? Escribí para buscar..."
+                    disabled={disabled}
+                />
+                {q && (
+                    <button className="search-clear" onClick={() => setQ('')} aria-label="Borrar" type="button">
+                        <Icon icon="game-icons:cross-mark" />
+                    </button>
+                )}
+            </div>
             {resultados.length > 0 && (
                 <ul className="suggestions">
                     {resultados.map((s) => (

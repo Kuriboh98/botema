@@ -34,7 +34,7 @@ export async function login({ email, password }) {
 }
 
 export async function getPerfil(id) {
-    const user = await User.findById(id).select('username email bestScore gamesPlayed');
+    const user = await User.findById(id).select('username email bestScore bestScoreAt gamesPlayed songsCompleted');
     if (!user) throw httpError(404, 'Usuario no encontrado');
     return user;
 }
