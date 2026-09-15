@@ -32,14 +32,15 @@ export default function Auth({ onLogin }) {
     return (
         <div className="auth-wrap">
             <div className="auth-card">
-                <h1 className="brand">
-                    BoTema<span className="dot">.</span>
-                </h1>
-                <h2 className="hero-title">La música uruguaya también se juega</h2>
-                <p className="tagline">Escuchá, adiviná y encadená aciertos para mantener tu racha.</p>
-
-                <div className="auth-illustration">
-                    <Mascota pose="login" alt="Mascota de BoTema" />
+                <div className="auth-hero">
+                    <div className="auth-illustration">
+                        <Mascota pose="login" alt="Mascota de BoTema" />
+                    </div>
+                    <h1 className="brand">
+                        BoTema<span className="dot">.</span>
+                    </h1>
+                    <h2 className="hero-title">La música uruguaya también se juega</h2>
+                    <p className="tagline">Escuchá, adiviná y encadená aciertos para mantener tu racha.</p>
                 </div>
 
                 <div className="tabs">

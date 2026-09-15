@@ -2,7 +2,8 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import { connectMongoDB } from './mongodb.js';
-import { importarArtista } from '../services/song.service.js';
+import { importarArtista, importarCancion } from '../services/song.service.js';
+import { CANCIONES_EXTRA } from '../config/extraSongs.js';
 import { Song } from '../models/song.model.js';
 
 const ARTISTAS = [
@@ -43,6 +44,11 @@ const ARTISTAS = [
     'Los Olimareños',
     'La Penúltima',
     'Carlos Gardel',
+    'Martín Buscaglia',
+    'Peyote Asesino',
+    'Falke 912',
+    'Zeballos',
+    'Knak',
 ];
 
 await connectMongoDB();
@@ -57,6 +63,20 @@ for (const artista of ARTISTAS) {
     total += r.importadas;
     console.log(`  ${artista.padEnd(26)} ${r.importadas} nuevas (de ${r.encontradas})`);
 }
+// Canciones puntuales de otros artistas
+if (CANCIONES_EXTRA.length) {
+    console.log('\nCanciones extra:');
+    for (const criterio of CANCIONES_EXTRA) {
+        const r = await importarCancion(criterio);
+        if (r.importada) {
+            total += 1;
+            console.log(`  ✓ "${r.title}" — ${r.artist}`);
+        } else {
+            console.log(`  ✗ "${criterio.title}" — ${criterio.artist} (${r.motivo})`);
+        }
+    }
+}
+
 console.log(`\nCatálogo listo: ${total} canciones importadas.`);
 
 await mongoose.disconnect();

@@ -25,15 +25,45 @@ export async function buscarCancionesDeArtista(artista, limit = 25) {
                 !esExplicita(r) && // que NO esté marcada como explícita
                 !estaBloqueada(r) // y que no esté en la lista negra manual
         )
-        .map((r) => ({
-            title: r.trackName,
-            artist: r.artistName,
-            previewUrl: r.previewUrl,
-            coverUrl: r.artworkUrl100?.replace('100x100bb', '600x600bb'),
-            year: r.releaseDate ? new Date(r.releaseDate).getFullYear() : null,
-            genre: r.primaryGenreName,
-            itunesId: String(r.trackId),
-        }));
+        .map(mapearCancion);
+}
+
+// Busca UNA canción específica por título + artista (y año opcional), sin importar
+// todo el artista. Útil para sumar temas puntuales de artistas que no están en la lista.
+// El título se compara exacto (respeta tildes/puntuación, ignora mayúsculas).
+export async function buscarCancionExacta({ title, artist, year }) {
+    const term = `${artist} ${title}`;
+    const url = `${BASE}?term=${encodeURIComponent(term)}&entity=song&country=UY&limit=25`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Error consultando iTunes');
+    const data = await res.json();
+
+    const t = (title || '').trim().toLowerCase();
+    const a = normalizar(artist);
+    const candidatos = data.results.filter(
+        (r) =>
+            r.previewUrl &&
+            (r.trackName || '').trim().toLowerCase() === t &&
+            normalizar(r.artistName).includes(a) &&
+            (!year || (r.releaseDate && new Date(r.releaseDate).getFullYear() === year)) &&
+            !esEnVivo(r)
+    );
+
+    return candidatos[0] ? mapearCancion(candidatos[0]) : null;
+}
+
+// Arma el objeto canción a partir de un resultado de iTunes.
+function mapearCancion(r) {
+    return {
+        title: r.trackName,
+        artist: r.artistName,
+        previewUrl: r.previewUrl,
+        coverUrl: r.artworkUrl100?.replace('100x100bb', '600x600bb'),
+        year: r.releaseDate ? new Date(r.releaseDate).getFullYear() : null,
+        genre: r.primaryGenreName,
+        itunesId: String(r.trackId),
+    };
 }
 
 // Pasa a minúsculas y saca los acentos, para comparar sin importar tildes.

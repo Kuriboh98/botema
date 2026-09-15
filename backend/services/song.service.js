@@ -1,6 +1,6 @@
 // services/song.service.js
 import { Song } from '../models/song.model.js';
-import { buscarCancionesDeArtista } from './itunes.service.js';
+import { buscarCancionesDeArtista, buscarCancionExacta } from './itunes.service.js';
 
 
 export async function importarArtista(artista) {
@@ -27,6 +27,18 @@ export async function importarArtista(artista) {
     }
 
     return { artista, encontradas: canciones.length, importadas };
+}
+
+// Importa UNA canción específica (título + artista, año opcional).
+export async function importarCancion(criterio) {
+    const c = await buscarCancionExacta(criterio);
+    if (!c) return { ...criterio, importada: false, motivo: 'no encontrada en iTunes' };
+
+    const yaExiste = await Song.findOne({ title: c.title, artist: c.artist }).select('_id');
+    if (yaExiste) return { ...criterio, importada: false, motivo: 'ya estaba en el catálogo' };
+
+    await Song.updateOne({ itunesId: c.itunesId }, { $setOnInsert: c }, { upsert: true });
+    return { ...criterio, importada: true, title: c.title, artist: c.artist, year: c.year };
 }
 
 // Lista el catálogo.
