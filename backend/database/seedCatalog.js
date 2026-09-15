@@ -33,7 +33,7 @@ const ARTISTAS = [
     'Ana Prada',
     'Los Iracundos',
     'Rombai',
-    'La Nueva Escuela',
+    { name: 'La Nueva Escuela', id: 1368168510 }, // hay 2 homónimas; esta es la uruguaya
     'The La Planta',
     'Matías Valdez',
     'Totem Uruguay',
@@ -61,7 +61,7 @@ let total = 0;
 for (const artista of ARTISTAS) {
     const r = await importarArtista(artista);
     total += r.importadas;
-    console.log(`  ${artista.padEnd(26)} ${r.importadas} nuevas (de ${r.encontradas})`);
+    console.log(`  ${r.artista.padEnd(26)} ${r.importadas} nuevas (de ${r.encontradas})`);
 }
 // Canciones puntuales de otros artistas
 if (CANCIONES_EXTRA.length) {

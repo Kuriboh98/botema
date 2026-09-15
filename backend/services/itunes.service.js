@@ -4,6 +4,7 @@
 import { CANCIONES_BLOQUEADAS } from '../config/blocklist.js';
 
 const BASE = 'https://itunes.apple.com/search';
+const BASE_LOOKUP = 'https://itunes.apple.com/lookup';
 
 export async function buscarCancionesDeArtista(artista, limit = 25) {
     const url = `${BASE}?term=${encodeURIComponent(artista)}&entity=song&country=UY&limit=${limit}`;
@@ -24,6 +25,27 @@ export async function buscarCancionesDeArtista(artista, limit = 25) {
                 !esEnVivo(r) && // que NO sea una versión en vivo
                 !esExplicita(r) && // que NO esté marcada como explícita
                 !estaBloqueada(r) // y que no esté en la lista negra manual
+        )
+        .map(mapearCancion);
+}
+
+// Trae las canciones de un artista por su ID de iTunes (evita homónimos:
+// hay dos "La Nueva Escuela", así traemos SOLO la uruguaya por su id).
+export async function buscarCancionesPorArtistId(artistId, limit = 30) {
+    const url = `${BASE_LOOKUP}?id=${artistId}&entity=song&limit=${limit}&country=UY`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Error consultando iTunes');
+    const data = await res.json();
+
+    return data.results
+        .filter(
+            (r) =>
+                r.wrapperType === 'track' &&
+                r.previewUrl &&
+                !esEnVivo(r) &&
+                !esExplicita(r) &&
+                !estaBloqueada(r)
         )
         .map(mapearCancion);
 }

@@ -1,10 +1,15 @@
 // services/song.service.js
 import { Song } from '../models/song.model.js';
-import { buscarCancionesDeArtista, buscarCancionExacta } from './itunes.service.js';
+import { buscarCancionesDeArtista, buscarCancionesPorArtistId, buscarCancionExacta } from './itunes.service.js';
 
 
+// Acepta un nombre (string) o un objeto { name, id }. Si trae `id`, usa el lookup
+// por artistId de iTunes (para desambiguar artistas homónimos).
 export async function importarArtista(artista) {
-    const canciones = await buscarCancionesDeArtista(artista);
+    const nombre = typeof artista === 'string' ? artista : artista.name;
+    const canciones = artista.id
+        ? await buscarCancionesPorArtistId(artista.id)
+        : await buscarCancionesDeArtista(nombre);
     let importadas = 0;
     const vistas = new Set(); // título+artista ya procesados en esta importación
 
@@ -26,7 +31,7 @@ export async function importarArtista(artista) {
         if (res.upsertedCount) importadas++;
     }
 
-    return { artista, encontradas: canciones.length, importadas };
+    return { artista: nombre, encontradas: canciones.length, importadas };
 }
 
 // Importa UNA canción específica (título + artista, año opcional).
