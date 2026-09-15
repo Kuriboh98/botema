@@ -40,6 +40,9 @@ const ARTISTAS = [
     'Chala Madre',
     'Jorge Do Prado',
     'Niña Lobo',
+    'Los Olimareños',
+    'La Penúltima',
+    'Carlos Gardel',
 ];
 
 await connectMongoDB();

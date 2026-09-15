@@ -6,8 +6,18 @@ import { buscarCancionesDeArtista } from './itunes.service.js';
 export async function importarArtista(artista) {
     const canciones = await buscarCancionesDeArtista(artista);
     let importadas = 0;
+    const vistas = new Set(); // título+artista ya procesados en esta importación
 
     for (const c of canciones) {
+        // Evitamos duplicados: mismo título y artista (iTunes trae el tema en varios álbumes)
+        const clave = `${c.title.toLowerCase().trim()}|${c.artist.toLowerCase().trim()}`;
+        if (vistas.has(clave)) continue;
+        vistas.add(clave);
+
+        // Si ya está en el catálogo (mismo título y artista), no lo duplicamos
+        const yaExiste = await Song.findOne({ title: c.title, artist: c.artist }).select('_id');
+        if (yaExiste) continue;
+
         const res = await Song.updateOne(
             { itunesId: c.itunesId },
             { $setOnInsert: c },

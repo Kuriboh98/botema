@@ -1,6 +1,6 @@
 # BoTema 🎭
 
-Juego original para adivinar **canciones uruguayas** de oído (estilo _Heardle_), en **modo racha** y con **pistas** estratégicas. Cuanto antes adivinás, más puntos; encadenás aciertos para mantener la racha.
+Juego original para adivinar **canciones uruguayas** de oído, en **modo racha** y con **pistas** estratégicas. Cuanto antes adivinás, más puntos; encadenás aciertos para mantener la racha.
 
 Proyecto full-stack dividido en dos partes:
 

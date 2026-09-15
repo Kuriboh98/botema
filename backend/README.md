@@ -1,6 +1,6 @@
 # BoTema — Backend
 
-API REST del juego **BoTema**: adiviná canciones **uruguayas** antes de que suenen demasiado (estilo _Heardle_), en modo racha y con pistas estratégicas.
+API REST del juego **BoTema**: adiviná canciones **uruguayas** antes de que suenen demasiado, en modo racha y con pistas estratégicas.
 
 ## Stack
 
