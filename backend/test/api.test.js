@@ -123,8 +123,22 @@ describe('El juego', () => {
         const res = await auth(request(app).post('/games'), t);
         expect(res.status).toBe(201);
         expect(res.body.currentRound).toBe(1);
-        expect(res.body.allowedDuration).toBe(0.1);
+        expect(res.body.allowedDuration).toBe(1); // ronda 1 = 1 segundo
         expect(res.body.title).toBeUndefined(); // no revela la respuesta
+    });
+
+    test('DELETE /games/:id abandona la partida', async () => {
+        const t = await token();
+        const juego = await auth(request(app).post('/games'), t);
+        const id = juego.body.id;
+
+        const del = await auth(request(app).delete(`/games/${id}`), t);
+        expect(del.status).toBe(200);
+        expect(del.body.abandoned).toBe(true);
+
+        // ya no existe: pedir su estado da 404
+        const estado = await auth(request(app).get(`/games/${id}`), t);
+        expect(estado.status).toBe(404);
     });
 
     test('adivinar la canción correcta suma puntos y pasa a otra', async () => {

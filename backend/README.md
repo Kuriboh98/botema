@@ -97,6 +97,7 @@ La arquitectura sigue el patrón en **capas**: `ruta → controller → service 
 | POST | `/games/:id/guess` | 🔒 | Adivinar la canción |
 | POST | `/games/:id/skip` | 🔒 | Pasar de ronda |
 | POST | `/games/:id/hint` | 🔒 | Pedir una pista |
+| DELETE | `/games/:id` | 🔒 | Abandonar (borrar) una partida |
 | GET | `/leaderboard` | — | Ranking por mejor puntaje (top 10) |
 
 🔒 = requiere el token en la cabecera `Authorization: Bearer <token>`.

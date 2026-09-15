@@ -140,6 +140,16 @@ export async function pedirPista(userId, gameId, tipo) {
 }
 
 // ================================================================
+// ABANDONAR PARTIDA — el jugador la borra (con sus intentos)
+// ================================================================
+export async function abandonarPartida(userId, gameId) {
+    const game = await cargarPartida(gameId, userId); // 404 si no es del usuario
+    await Guess.deleteMany({ game: game._id });
+    await Game.deleteOne({ _id: game._id });
+    return { abandoned: true };
+}
+
+// ================================================================
 // Helpers internos
 // ================================================================
 

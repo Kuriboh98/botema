@@ -13,5 +13,6 @@ router.get('/:id', gameController.estado); //           GET   /games/:id        
 router.post('/:id/guess', gameController.adivinar); //  POST  /games/:id/guess   (adivinar)
 router.post('/:id/skip', gameController.pasar); //      POST  /games/:id/skip    (pasar de ronda)
 router.post('/:id/hint', gameController.pista); //      POST  /games/:id/hint    (pedir pista)
+router.delete('/:id', gameController.abandonar); //     DELETE /games/:id        (abandonar partida)
 
 export default router;

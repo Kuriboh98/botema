@@ -118,7 +118,7 @@ Inicia una partida (racha). Elige una canción al azar, oculta.
   "id": "66e...",
   "status": "playing",
   "currentRound": 1,
-  "allowedDuration": 0.1,
+  "allowedDuration": 1,
   "previewUrl": "https://audio-ssl.itunes.apple.com/.../preview.m4a",
   "totalScore": 0,
   "songsCompleted": 0,
@@ -154,16 +154,16 @@ Adivina la canción actual.
   "correct": true,
   "pointsEarned": 60,
   "revealed": { "title": "Ves", "artist": "La Vela Puerca", "coverUrl": "...", "year": 2011 },
-  "id": "66e...", "status": "playing", "currentRound": 1, "allowedDuration": 0.1,
+  "id": "66e...", "status": "playing", "currentRound": 1, "allowedDuration": 1,
   "previewUrl": "...", "totalScore": 60, "songsCompleted": 1, "artistRevealed": false, "hintsUsed": []
 }
 ```
 
 **Respuesta si ERRÁS pero quedan rondas (200):**
 ```json
-{ "correct": false, "sameArtist": true, "currentRound": 2, "allowedDuration": 0.5, "totalScore": 0, "...": "..." }
+{ "correct": false, "sameArtist": true, "currentRound": 2, "allowedDuration": 2, "totalScore": 0, "...": "..." }
 ```
-- `sameArtist: true` → acertaste el artista (🟡). Se desbloquea la pista de artista gratis.
+- `sameArtist: true` → acertaste el artista. Se revela automáticamente y gratis en la ficha.
 
 **Respuesta si ERRÁS la 6ª ronda (game over, 200):**
 ```json
@@ -201,16 +201,28 @@ Tipos válidos: `anio` (−10), `letra` (−20), `artista` (−30), `tapa` (−3
 
 ---
 
+### DELETE /games/:id 🔒
+Abandona (borra) una partida del jugador, junto con sus intentos.
+
+**Respuesta (200):**
+```json
+{ "abandoned": true }
+```
+
+**Errores:** `404` partida no encontrada.
+
+---
+
 ## Leaderboard
 
 ### GET /leaderboard
-Ranking general: los 10 jugadores con mejor racha (`bestScore`).
+Ranking general: los 10 jugadores con mejor puntaje (`bestScore`), con la fecha del récord.
 
 **Respuesta (200):**
 ```json
 [
-  { "_id": "66c...", "username": "ada", "bestScore": 320, "gamesPlayed": 12 },
-  { "_id": "66c...", "username": "leo", "bestScore": 210, "gamesPlayed": 8 }
+  { "_id": "66c...", "username": "ada", "bestScore": 320, "bestScoreAt": "2026-09-12T18:30:00.000Z" },
+  { "_id": "66c...", "username": "leo", "bestScore": 210, "bestScoreAt": "2026-09-10T21:05:00.000Z" }
 ]
 ```
 
