@@ -63,6 +63,8 @@ npm test           # modo watch (re-corre al guardar)
 
 Los tests usan una MongoDB **en memoria** y **simulan iTunes**, así que no dependen de internet ni de tu base real.
 
+El detalle de las 18 pruebas (qué cubre cada una y cómo funcionan) está en [TESTING.md](TESTING.md).
+
 ## Estructura del proyecto
 
 ```
