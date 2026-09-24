@@ -3,7 +3,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-// Simulamos iTunes: los tests NO deben depender de internet.
+// Simulamos iTunes
 vi.mock('../services/itunes.service.js', () => ({
     buscarCancionesDeArtista: async (artista) => [
         {

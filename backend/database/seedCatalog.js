@@ -33,7 +33,7 @@ const ARTISTAS = [
     'Ana Prada',
     'Los Iracundos',
     'Rombai',
-    { name: 'La Nueva Escuela', id: 1368168510 }, // hay 2 homónimas; esta es la uruguaya
+    { name: 'La Nueva Escuela', id: 1368168510 },
     'The La Planta',
     'Matías Valdez',
     'Totem Uruguay',
