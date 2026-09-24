@@ -107,6 +107,7 @@ La arquitectura sigue el patrón en **capas**: `ruta → controller → service 
 - `GET /auth/me` devuelve `username`, `email`, `bestScore`, `bestScoreAt`, `gamesPlayed` y `songsCompleted`.
 - `GET /leaderboard` devuelve el top 10 por `bestScore`, con la **fecha** del récord (`bestScoreAt`).
 - El backend tiene **CORS** habilitado para que el frontend (otro origen) pueda consumirlo.
+- Tiene **rate limiting** (`express-rate-limit`): límite de pedidos por IP (más estricto en `/auth`) para evitar abuso/bombardeo. Se desactiva en los tests.
 
 Para el detalle de cada endpoint (bodies y respuestas de ejemplo), ver [API.md](API.md).
 
