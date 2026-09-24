@@ -93,7 +93,7 @@ La arquitectura sigue el patrón en **capas**: `ruta → controller → service 
 | GET | `/auth/me` | 🔒 | Perfil del jugador |
 | GET | `/songs` | — | Listar el catálogo |
 | GET | `/songs/search?q=` | — | Autocomplete |
-| POST | `/songs` | — | Importar un artista de iTunes |
+| POST | `/songs` | 🔒 | Importar un artista de iTunes |
 | POST | `/games` | 🔒 | Iniciar una partida |
 | GET | `/games/:id` | 🔒 | Estado de la partida |
 | POST | `/games/:id/guess` | 🔒 | Adivinar la canción |

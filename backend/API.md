@@ -90,8 +90,8 @@ Autocomplete: busca por título o artista (máx. 10 resultados).
 
 ---
 
-### POST /songs
-Importa las canciones de un artista desde iTunes al catálogo (sin duplicar).
+### POST /songs 🔒
+Importa las canciones de un artista desde iTunes al catálogo (sin duplicar). Requiere token (escribe en la base).
 
 **Body:**
 ```json
@@ -103,7 +103,7 @@ Importa las canciones de un artista desde iTunes al catálogo (sin duplicar).
 { "artista": "No Te Va Gustar", "encontradas": 25, "importadas": 25 }
 ```
 
-**Errores:** `400` falta el campo `artista`.
+**Errores:** `400` falta el campo `artista` · `401` token faltante o inválido.
 
 ---
 

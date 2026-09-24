@@ -71,11 +71,17 @@ describe('Catálogo', () => {
         expect(res.body[0].artist).toBe('La Vela');
     });
 
+    test('POST /songs sin token → 401', async () => {
+        const res = await request(app).post('/songs').send({ artista: 'Test' });
+        expect(res.status).toBe(401);
+    });
+
     test('POST /songs importa (iTunes simulado) y no duplica', async () => {
-        const r1 = await request(app).post('/songs').send({ artista: 'Test' });
+        const t = await token();
+        const r1 = await auth(request(app).post('/songs'), t).send({ artista: 'Test' });
         expect(r1.status).toBe(201);
         expect(r1.body.importadas).toBe(1);
-        const r2 = await request(app).post('/songs').send({ artista: 'Test' });
+        const r2 = await auth(request(app).post('/songs'), t).send({ artista: 'Test' });
         expect(r2.body.importadas).toBe(0); // no duplica
     });
 });
