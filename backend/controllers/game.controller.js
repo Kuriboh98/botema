@@ -48,6 +48,14 @@ export async function pista(req, res, next) {
     }
 }
 
+export async function rendirse(req, res, next) {
+    try {
+        res.json(await gameService.rendirse(req.user.id, req.params.id));
+    } catch (err) {
+        next(err);
+    }
+}
+
 export async function abandonar(req, res, next) {
     try {
         res.json(await gameService.abandonarPartida(req.user.id, req.params.id));

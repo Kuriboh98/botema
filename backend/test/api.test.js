@@ -213,6 +213,21 @@ describe('El juego', () => {
         const res = await auth(request(app).post(`/games/${start.body.id}/guess`).send({ guessedSongId: game.currentSong }), t);
         expect(res.status).toBe(409);
     });
+
+    test('rendirse termina la partida y guarda el puntaje en el récord', async () => {
+        const t = await token();
+        const start = await auth(request(app).post('/games'), t);
+        const game = await Game.findById(start.body.id);
+        // acierta una (100 pts en ronda 1)
+        await auth(request(app).post(`/games/${start.body.id}/guess`).send({ guessedSongId: game.currentSong }), t);
+        // se rinde
+        const res = await auth(request(app).post(`/games/${start.body.id}/surrender`), t);
+        expect(res.status).toBe(200);
+        expect(res.body.status).toBe('over');
+        // el puntaje quedó en el perfil
+        const me = await auth(request(app).get('/auth/me'), t);
+        expect(me.body.bestScore).toBe(100);
+    });
 });
 
 describe('Leaderboard', () => {

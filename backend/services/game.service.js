@@ -140,6 +140,16 @@ export async function pedirPista(userId, gameId, tipo) {
 }
 
 // ================================================================
+// RENDIRSE — termina la partida AHORA, conservando el puntaje actual
+// ================================================================
+export async function rendirse(userId, gameId) {
+    const game = await cargarPartidaJugable(gameId, userId);
+    const objetivo = await Song.findById(game.currentSong);
+    await terminarPartida(game); // cierra la partida y actualiza el récord
+    return { surrendered: true, revealed: infoCancion(objetivo), ...resumenFinal(game) };
+}
+
+// ================================================================
 // ABANDONAR PARTIDA — el jugador la borra (con sus intentos)
 // ================================================================
 export async function abandonarPartida(userId, gameId) {

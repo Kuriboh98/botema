@@ -40,6 +40,7 @@ export const api = {
     guess: (id, guessedSongId) =>
         request(`/games/${id}/guess`, { method: 'POST', body: { guessedSongId }, auth: true }),
     skip: (id) => request(`/games/${id}/skip`, { method: 'POST', auth: true }),
+    surrender: (id) => request(`/games/${id}/surrender`, { method: 'POST', auth: true }),
     hint: (id, tipo) => request(`/games/${id}/hint`, { method: 'POST', body: { tipo }, auth: true }),
 
     // Ranking

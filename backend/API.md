@@ -201,6 +201,18 @@ Tipos válidos: `anio` (−10), `letra` (−20), `artista` (−30), `tapa` (−3
 
 ---
 
+### POST /games/:id/surrender 🔒
+Rendirse: **termina la partida ahora conservando el puntaje** (actualiza el récord del jugador). Revela la canción actual.
+
+**Respuesta (200):**
+```json
+{ "surrendered": true, "revealed": { "title": "...", "artist": "..." }, "status": "over", "totalScore": 120, "songsCompleted": 2 }
+```
+
+**Errores:** `404` partida no encontrada · `409` la partida ya terminó.
+
+---
+
 ### DELETE /games/:id 🔒
 Abandona (borra) una partida del jugador, junto con sus intentos.
 

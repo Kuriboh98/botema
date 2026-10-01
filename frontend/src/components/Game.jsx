@@ -114,6 +114,23 @@ export default function Game({ onHome }) {
         }
     }
 
+    async function rendirse() {
+        if (busy) return;
+        setBusy(true);
+        setShowHints(false);
+        setFeedback(null);
+        const audioActual = game.previewUrl;
+        try {
+            const res = await api.surrender(game.id);
+            setGame((g) => ({ ...g, status: 'over', totalScore: res.totalScore, songsCompleted: res.songsCompleted }));
+            setFeedback({ over: true, revealed: { ...res.revealed, previewUrl: audioActual } });
+        } catch (e) {
+            alert(e.message);
+        } finally {
+            setBusy(false);
+        }
+    }
+
     if (!game) return <p className="loading">Cargando partida...</p>;
 
     // --- Fin de partida: info de la canción + puntos + leaderboard ---
@@ -177,13 +194,16 @@ export default function Game({ onHome }) {
 
             <SearchBox onSelect={adivinar} disabled={busy} />
 
-            <button className="btn-ghost skip" onClick={saltar} disabled={busy}>
-                {game.currentRound >= 6 ? (
-                    <><Icon icon="game-icons:flying-flag" className="ic" /> Rendirse</>
-                ) : (
-                    <>Escuchar más <Icon icon="game-icons:fast-forward-button" className="ic" /> (pasar ronda)</>
+            <div className="acciones">
+                {game.currentRound < 6 && (
+                    <button className="btn-ghost" onClick={saltar} disabled={busy}>
+                        Escuchar más <Icon icon="game-icons:fast-forward-button" className="ic" /> (pasar ronda)
+                    </button>
                 )}
-            </button>
+                <button className="btn-ghost rendirse" onClick={rendirse} disabled={busy}>
+                    <Icon icon="game-icons:flying-flag" className="ic" /> Rendirse
+                </button>
+            </div>
 
             {/* El historial va abajo para no empujar el buscador */}
             {falladas.length > 0 && (

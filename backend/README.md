@@ -99,6 +99,7 @@ La arquitectura sigue el patrón en **capas**: `ruta → controller → service 
 | POST | `/games/:id/guess` | 🔒 | Adivinar la canción |
 | POST | `/games/:id/skip` | 🔒 | Pasar de ronda |
 | POST | `/games/:id/hint` | 🔒 | Pedir una pista |
+| POST | `/games/:id/surrender` | 🔒 | Rendirse: termina la partida guardando el puntaje |
 | DELETE | `/games/:id` | 🔒 | Abandonar (borrar) una partida |
 | GET | `/leaderboard` | — | Ranking por mejor puntaje (top 10) |
 

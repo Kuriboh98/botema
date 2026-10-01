@@ -201,7 +201,10 @@ input:focus { outline: none; border-color: var(--accent); }
 .s-title { font-weight: 600; }
 .s-artist { font-size: 12px; color: var(--ink-soft); }
 
-.skip { width: 100%; margin-bottom: 22px; }
+.acciones { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.acciones .btn-ghost { width: 100%; }
+.rendirse { color: var(--ink-soft); }
+.rendirse:hover:not(:disabled) { border-color: var(--danger); color: var(--ink); }
 
 .hints-sub { color: var(--ink-soft); font-size: 13px; margin: 4px 0 4px; }
 .hints-close { width: 100%; margin-top: 16px; }
