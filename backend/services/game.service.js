@@ -56,6 +56,7 @@ export async function adivinar(userId, gameId, guessedSongId) {
         game.totalScore += pointsEarned;
         game.songsCompleted += 1;
         game.playedSongs.push(objetivo._id);
+        await actualizarRecord(game); // guarda el mejor puntaje en vivo (aunque no cierre la partida)
 
         const siguiente = await elegirCancionRandom(game.playedSongs);
         if (!siguiente) {
@@ -182,6 +183,17 @@ async function cargarPartidaJugable(gameId, userId) {
     const game = await cargarPartida(gameId, userId);
     if (game.status !== 'playing') throw httpError(409, 'La partida ya terminó');
     return game;
+}
+
+// Actualiza el mejor puntaje del usuario EN VIVO (sin terminar la partida),
+// para que el leaderboard refleje la racha aunque el jugador no la cierre.
+async function actualizarRecord(game) {
+    const user = await User.findById(game.user);
+    if (game.totalScore > user.bestScore) {
+        user.bestScore = game.totalScore;
+        user.bestScoreAt = new Date();
+        await user.save();
+    }
 }
 
 // Cierra la partida y actualiza el récord del usuario.

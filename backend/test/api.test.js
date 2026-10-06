@@ -158,6 +158,17 @@ describe('El juego', () => {
         expect(res.body.currentRound).toBe(1); // nueva canción arranca de 1
     });
 
+    test('el récord se guarda EN VIVO (sin terminar la partida)', async () => {
+        const t = await token();
+        const start = await auth(request(app).post('/games'), t);
+        const game = await Game.findById(start.body.id);
+        // acierta una (100 pts) pero NO termina la partida
+        await auth(request(app).post(`/games/${start.body.id}/guess`).send({ guessedSongId: game.currentSong }), t);
+        // el mejor puntaje ya debe estar en el perfil / leaderboard
+        const me = await auth(request(app).get('/auth/me'), t);
+        expect(me.body.bestScore).toBe(100);
+    });
+
     test('errar con el mismo artista da sameArtist y desbloquea el artista', async () => {
         const t = await token();
         await setCatalog([
