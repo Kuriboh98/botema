@@ -124,8 +124,7 @@ function estaBloqueada(r) {
 }
 
 // ¿El artista buscado aparece como un artista PROPIO del resultado?
-// Separa colaboraciones (por &, coma, feat, ft, vs) y exige coincidencia EXACTA,
-// para que "Buitres" NO matchee con "Los Buitres de Culiacán Sinaloa".
+// Separa colaboraciones (por &, coma, feat, ft, vs) y exige coincidencia EXACTA
 function artistaCoincide(artistName, buscado) {
     const segmentos = normalizar(artistName).split(/\s*[&,]\s*|\s+feat\.?\s+|\s+ft\.?\s+|\s+vs\.?\s+/);
     return segmentos.some((seg) => seg.trim() === buscado);

@@ -61,7 +61,6 @@ export async function buscarEnCatalogo(q) {
 }
 
 // Escapa caracteres especiales y hace que cada vocal/ñ matchee con o sin tilde.
-// Así "ruben" encuentra "Rubén", "marama" encuentra "Márama", etc.
 function regexInsensible(texto) {
     const escapado = texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     return escapado

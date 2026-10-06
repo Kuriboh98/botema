@@ -13,7 +13,7 @@ const gameSchema = new mongoose.Schema(
         songsCompleted: { type: Number, default: 0 },
         playedSongs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }], // para no repetir
         hintsUsed: [{ type: String }], // pistas de la canción ACTUAL (se resetea al cambiar)
-        artistRevealed: { type: Boolean, default: false }, // se desbloqueó el artista gratis (🟡)
+        artistRevealed: { type: Boolean, default: false }, // se desbloqueó el artista gratis
     },
     { timestamps: true }
 );

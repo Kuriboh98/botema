@@ -8,7 +8,7 @@ const guessSchema = new mongoose.Schema(
         guessedSong: { type: mongoose.Schema.Types.ObjectId, ref: 'Song', required: true },
         round: { type: Number, required: true },
         correct: { type: Boolean, required: true },
-        sameArtist: { type: Boolean, default: false }, // erró la canción pero acertó el artista (🟡)
+        sameArtist: { type: Boolean, default: false }, // erró la canción pero acertó el artista
     },
     { timestamps: true }
 );
